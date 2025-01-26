@@ -1,12 +1,12 @@
+![](assets/logo.png)
 # Overview
-
 This project focuses on developing a real-time telemetry system for a [lucky dog racing league](https://www.racelucky.com/) race car. The system will monitor the vehicle's health, collect performance data, and transmit it wirelessly for analysis and visualization.
-
 ## Project Goals
-- * **Real-time Vehicle Health Monitoring:**
+- **Real-time Vehicle Health Monitoring:**
 	- Track critical parameters like temperatures and fuel levels.
 - **Telemetry Data Acquisition and Storage:**
 	- Collect comprehensive telemetry data for performance analysis.
+	- Figure out how Stewart is so freaking fast.
 	- Store data either locally or in a cloud-based solution.
 - **Hardware Development:**
 	- Design and manufacture a custom PCB using KiCAD.
@@ -21,3 +21,6 @@ This project focuses on developing a real-time telemetry system for a [lucky dog
 * **Wireless Communication:** XBEE RF modules (for data transmission)
 * **Data Serialization:** Postcard (using Serde for straightforward implementation)
 * **Time-Series Database:**  Prometheus, and Grafana for data storage and analysis.
+
+## Architecture Overview
+![](assets/Overview%20Canvas.png)
