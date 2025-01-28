@@ -12,6 +12,7 @@
 - [ ] IMU
 ## JLCPCB Notes
 - Better component search: <https://yaqwsx.github.io/jlcparts/#/>
+- Using PCB constraints from [KiCad-DesignRules](https://github.com/labtroll/KiCad-DesignRules)
 ### Easyeda2kicad
 - Permits importing symbol and footprint, e.g.
 ```
@@ -49,3 +50,36 @@
 ### GPS
 - [SparkFun GPS Breakout - NEO-M9N, SMA](https://www.sparkfun.com/products/17285)
 - [GNSS L1/L2 Multi-Band Magnetic Mount Antenna - 5m (SMA)](https://www.sparkfun.com/products/15192)
+### IMU Choices
+Here are some IMU options for consideration, focusing on devices with Rust drivers:
+- **[MPU-6050](https://crates.io/crates/mpu6050-dmp)**
+    -   **Axes:** 6 (3-axis Accelerometer + 3-axis Gyroscope)
+    -   **Interface:** I2C
+    -   **Notes:**
+        -   Well-known, but older and less accurate than newer alternatives.
+        -   While a `mpu6050` crate exists, it's deprecated. The `mpu6050-dmp` crate is the preferred driver but has less support for the DMP features.
+        -   Considered a legacy option.
+- **[ICM-20948](https://github.com/icm-20948/icm20948-async)**
+    -   **Axes:** 9 (3-axis Accelerometer + 3-axis Gyroscope + 3-axis Magnetometer)
+    -   **Interface:** I2C (driver), SPI (breakout)
+    -   **Notes:**
+        -   Modern replacement for the MPU9250.
+        -   The `icm20948-async` driver is less widely used but appears complete and supports asynchronous operation.
+        -   [Adafruit Breakout Board](https://www.adafruit.com/product/4554)
+- **[ISM330DHCX](https://crates.io/crates/ism330dhcx)**
+    -   **Axes:** 6 (3-axis Accelerometer + 3-axis Gyroscope)
+    -   **Interface:** I2C, SPI
+    -   **Notes:**
+        -   Industrial-grade IMU with a focus on stability and reliability.
+        -   Features a Machine Learning Core for advanced processing.
+        -   The `ism330dhcx` driver is fairly active.
+        -   Includes a [`get_accelerometer`](https://docs.rs/ism330dhcx/0.6.0/ism330dhcx/struct.Ism330Dhcx.html#method.get_accelerometer) function (and likely others for gyroscope, etc.).
+        -   [Adafruit Breakout Board](https://www.adafruit.com/product/4502)
+- **[LSM303AGR](https://crates.io/crates/lsm303agr)**
+    -   **Axes:** 6 (3-axis Accelerometer + 3-axis Magnetometer)
+    -   **Interface:** I2C
+    -   **Notes:**
+        -   *Note:* This is **not a full IMU** as it lacks a gyroscope.
+        -   The `lsm303agr` driver looks robust.
+        -   [Adafruit Breakout Board](https://www.adafruit.com/product/4413)
+        -   Suitable for applications needing only acceleration and magnetic field data.
