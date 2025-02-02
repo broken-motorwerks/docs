@@ -41,6 +41,33 @@
 - [USB Hardware](https://www.st.com/resource/en/application_note/an4879-introduction-to-usb-hardware-and-pcb-guidelines-using-stm32-mcus-stmicroelectronics.pdf)
 - [Reference Manual](https://www.st.com/resource/en/reference_manual/rm0316-stm32f303xbcde-stm32f303x68-stm32f328x8-stm32f358xc-stm32f398xe-advanced-armbased-mcus-stmicroelectronics.pdf)
 - Using standard 10 pin arm cortex debug port
+
+### Crystal
+- Targeting \\(16Mhz\\)
+- Started with [HC-49SMD](https://www.lcsc.com/datasheet/lcsc_datasheet_2403291504_YXC-Crystal-Oscillators-X49SM16MSD2SC_C12676.pdf)
+- `X49SM16MSD2SC`
+Capacitor Parameters:
+\\[
+C_{L} = 20pF \\\\
+C_{S} = 7pF\\ Max \\\\
+D_{L} = 1\sim500\mu W\\ Max \\ (100\mu W\\ typical)
+\\]
+#### Determining \\(C_{L1}\\) and \\(C_{L2}\\)
+\\[ C_L - C_S = \frac{C_{L1}\\ C_{L2}}{C_{L1}+C_{L2}}\\]
+Simplifying:
+\\[ C_{L1} = C_{L2} \\]
+Final:
+\\[
+20pF - 7pf = \frac{{C_{L1}}^2}{2C_{L1}} \\\\
+2(13pF) = C_{L1} \\\\
+C_{L1} = 26pF
+\\]
+#### Determining \\( R_{Ext} \\)
+- Based on [AN2867](https://www.st.com/resource/en/application_note/an2867-guidelines-for-oscillator-design-on-stm8afals-and-stm32-mcusmpus-stmicroelectronics.pdf)
+\\[  R_{Ext} = \frac{1}{2\pi\\ F\\ C_{L1}} \\\\
+R_{Ext} = \frac{1}{2\pi\\ 16MHz \\ 26pF} \\\\
+R_{Ext} = 382 \Omega
+\\]
 ### LEDS
 - Using [KT-0603R](https://jlcpcb.com/partdetail/Hubei_KentoElec-KT0603R/C2286)
 - At 15mA, forward voltage is 2v based on chart in datasheet
@@ -59,7 +86,7 @@ Here are some IMU options for consideration, focusing on devices with Rust drive
         -   Well-known, but older and less accurate than newer alternatives.
         -   While a `mpu6050` crate exists, it's deprecated. The `mpu6050-dmp` crate is the preferred driver but has less support for the DMP features.
         -   Considered a legacy option.
-- **[ICM-20948](https://github.com/icm-20948/icm20948-async)**
+- **[ICM-20948](https://github.com/peterkrull/icm20948-async)**
     -   **Axes:** 9 (3-axis Accelerometer + 3-axis Gyroscope + 3-axis Magnetometer)
     -   **Interface:** I2C (driver), SPI (breakout)
     -   **Notes:**
